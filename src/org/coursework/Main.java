@@ -23,6 +23,15 @@ public class Main {
 	private static int maxRolesSize = 5;
 	private static GroupSort sorter = new GroupSort();
 	private static CoreDatabaseLink coreDatabaseLink;
+	private static Person loggedInAs;
+	
+	public static Optional<Person> getLoggedInAs() {
+		return Optional.ofNullable(loggedInAs);
+	}
+	
+	public static void setLoggedInAs(Person person) {
+		loggedInAs = person;
+	}
 	
 	public static Optional<CoreDatabaseLink> getDatabaseLink(){
 		return Optional.ofNullable(coreDatabaseLink);
