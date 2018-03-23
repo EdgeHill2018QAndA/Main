@@ -43,7 +43,7 @@ public class GroupSort {
 		return new HashSet<>(groups);
 	}
 	
-	public Group createGroup(Collection<Role> groupMustHave) {
+	private Group createGroup(Collection<Role> groupMustHave) {
 		List<StudentOption> list = new ArrayList<>();
 		int groupSize = Main.getRecommendedGroupSize();
 		for(int A = 0; A < groupSize; A++) {

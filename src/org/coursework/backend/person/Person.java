@@ -1,6 +1,8 @@
 package org.coursework.backend.person;
 
-public interface Person {
+import org.coursework.database.table.TableLink;
+
+public interface Person extends TableLink {
 	
 	public String getFirstName();
 	public String getLastName();

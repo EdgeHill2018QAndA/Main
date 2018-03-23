@@ -3,12 +3,14 @@ package org.coursework;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.coursework.backend.group.GroupSort;
 import org.coursework.backend.person.Person;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
+import org.coursework.database.core.CoreDatabaseLink;
 
 public class Main {
 	
@@ -16,29 +18,38 @@ public class Main {
 	private static final List<Role> ROLES = new ArrayList<>();
 	private static final List<StudentOption> ENTERED_OPTIONS = new ArrayList<>();
 	
-	private static int RECOMMENDED_GROUP_SIZE = 5;
-	private static int MIN_ROLES_SIZE = 1;
-	private static int MAX_ROLES_SIZE = 5;
-	private static GroupSort SORTER = new GroupSort();
+	private static int recommendedGroupSize = 5;
+	private static int minRolesSize = 1;
+	private static int maxRolesSize = 5;
+	private static GroupSort sorter = new GroupSort();
+	private static CoreDatabaseLink coreDatabaseLink;
+	
+	public static Optional<CoreDatabaseLink> getDatabaseLink(){
+		return Optional.ofNullable(coreDatabaseLink);
+	}
+	
+	public static void setDatabaseLink(CoreDatabaseLink link) {
+		coreDatabaseLink = link;
+	}
 	
 	public static GroupSort getGroupSort() {
-		return SORTER;
+		return sorter;
 	}
 	
 	public static int getRecommendedGroupSize() {
-		return RECOMMENDED_GROUP_SIZE;
+		return recommendedGroupSize;
 	}
 	
 	public static boolean setRecommendedGroupSize(int size) {
 		if(size > 1) {
 			return false;
 		}
-		RECOMMENDED_GROUP_SIZE = size;
+		recommendedGroupSize = size;
 		return true;
 	}
 	
 	public static int getMaxRoleSize() {
-		return MAX_ROLES_SIZE;
+		return maxRolesSize;
 	}
 	
 	public static boolean setMaxRoleSize(int size) {
@@ -48,12 +59,12 @@ public class Main {
 		if(size < 1) {
 			return false;
 		}
-		MAX_ROLES_SIZE = size;
+		maxRolesSize = size;
 		return true;
 	}
 	
 	public static int getMinRoleSize() {
-		return MIN_ROLES_SIZE;
+		return minRolesSize;
 	}
 	
 	public static boolean setMinRoleSize(int size) {
@@ -63,7 +74,7 @@ public class Main {
 		if(size < 1) {
 			return false;
 		}
-		MIN_ROLES_SIZE = size;
+		minRolesSize = size;
 		return true;
 	}
 	
