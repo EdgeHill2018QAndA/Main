@@ -15,5 +15,17 @@ public class Role {
 	public void setDisplayName(String name) {
 		this.displayName = name;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof Role)) {
+			return false;
+		}
+		Role role = (Role)obj;
+		if(!(role.getDisplayName().equalsIgnoreCase(getDisplayName()))) {
+			return false;
+		}
+		return true;
+	}
 
 }

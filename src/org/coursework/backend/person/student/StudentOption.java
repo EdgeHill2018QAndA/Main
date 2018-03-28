@@ -1,6 +1,8 @@
 package org.coursework.backend.person.student;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +14,15 @@ public class StudentOption {
 	
 	Student student;
 	List<Role> roles = new ArrayList<>();
+	
+	public StudentOption(Student student, Role... roles) {
+		this(student, Arrays.asList(roles));
+	}
+	
+	public StudentOption(Student student, Collection<Role> collection) {
+		this.student = student;
+		this.roles.addAll(collection);
+	}
 	
 	public Student getStudent() {
 		return student;

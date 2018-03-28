@@ -27,4 +27,17 @@ public class Group {
 		return new HashSet<>(students);
 	}
 	
+	public boolean swap(StudentOption newStudent) {
+		return swap(newStudent, options.stream().filter(s -> newStudent.getPreferredRole().get().equals(s.getPreferredRole().get())).findFirst().get());
+	}
+	
+	public boolean swap(StudentOption newStudent, StudentOption with) {
+		if(!options.contains(with)) {
+			return false;
+		}
+		options.remove(with);
+		options.add(newStudent);
+		return true;
+	}
+	
 }
