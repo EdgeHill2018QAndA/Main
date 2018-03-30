@@ -11,7 +11,7 @@ import org.coursework.backend.person.student.StudentOption;
 
 public class Group {
 
-    List<StudentOption> options;
+    List<StudentOption> options = new ArrayList<>();
 
     public Group(Collection<StudentOption> options) {
         this.options.addAll(options);

@@ -17,6 +17,10 @@ public class GroupSort {
 
     List<StudentOption> options = new ArrayList<>();
     //Set<Group> groups;
+    
+    public GroupSort(){
+        this(Main.getEnteredOptions());
+    }
 
     /**
      * Creates a instance of a groupsorter
@@ -31,7 +35,7 @@ public class GroupSort {
     /**
      * Creates a instance of a groupsorter
      *
-     * @param arr adds the students into the list of sorting students.
+     * @param coll adds the students into the list of sorting students.
      */
     public GroupSort(Collection<StudentOption> coll) {
         options.addAll(coll);
@@ -71,9 +75,12 @@ public class GroupSort {
      * specified.
      */
     public Set<Group> sortGroups(Collection<Role> groupsMustHave) {
+        System.out.println("Sorting Groups");
         List<Group> groups = new ArrayList<>();
-        while (options.size() >= Main.getRecommendedGroupSize()) {
+        while (!options.isEmpty()) {
+            System.out.println("On While");
             Group group = createGroup(groupsMustHave);
+            System.out.println("Adding: " + group.getStudents());
             groups.add(group);
         }
         return new HashSet<>(groups);
@@ -84,21 +91,24 @@ public class GroupSort {
         List<StudentOption> list = new ArrayList<>();
         int groupSize = Main.getRecommendedGroupSize();
         for (int A = 0; A < groupSize; A++) {
+            List<StudentOption> options;
             if (groupMustHave.isEmpty()) {
-                StudentOption student = pickRandom(getAppropeateRoles(list));
-                list.add(student);
-                this.options.remove(student);
+                options = (getAppropeateRoles(list));
             } else {
-                StudentOption student = pickRandom(getPreferredNeededStudents(list, groupMustHave));
-                list.add(student);
-                this.options.remove(student);
+                options = getPreferredNeededStudents(list, groupMustHave);
             }
+            if(options.isEmpty()){
+                break;
+            }
+            StudentOption student = pickRandom(options);
+            list.add(student);
+            this.options.remove(student);
         }
         return new Group(list);
     }
 
-    //picks a random student out of the specified collection of students
-    private StudentOption pickRandom(List<StudentOption> collection) {
+    //picks a random object out of the specified collection of objects
+    private <T extends Object> T pickRandom(List<T> collection) {
         Random random = new Random();
         int randomNum = random.nextInt(collection.size());
         return collection.get(randomNum);

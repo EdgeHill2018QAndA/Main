@@ -25,17 +25,17 @@ import javax.swing.JTextField;
 import org.coursework.Main;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
-import org.coursework.frontend.base.people.BaseStudent;
 import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.menu.MenuPanel;
+import org.coursework.frontend.base.people.CreateBaseStudent;
 
-public class StudentPanel extends JPanel implements BaseStudent {
+public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
 
     private class OnCancelListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            StudentPanel.this.menuScreen();
+            CreateStudentPanel.this.menuScreen();
         }
 
     }
@@ -45,10 +45,10 @@ public class StudentPanel extends JPanel implements BaseStudent {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                StudentOption option = StudentPanel.this.createOption();
+                StudentOption option = CreateStudentPanel.this.createOption();
                 Main.register(option);
                 Main.register(option.getStudent());
-                StudentPanel.this.menuScreen();
+                CreateStudentPanel.this.menuScreen();
             } catch (SQLException e1) {
                 e1.printStackTrace();
             }
@@ -65,12 +65,12 @@ public class StudentPanel extends JPanel implements BaseStudent {
             }
             JComboBox<?> source = (JComboBox<?>) event.getSource();
             Role role = (Role) event.getItem();
-            if (StudentPanel.this.chosenRoles.stream().filter(c -> !c.equals(source)).anyMatch(c -> c.getSelectedItem().equals(role))) {
+            if (CreateStudentPanel.this.chosenRoles.stream().filter(c -> !c.equals(source)).anyMatch(c -> c.getSelectedItem().equals(role))) {
                 source.setBackground(Color.RED);
                 return;
             }
             source.setBackground(null);
-            StudentPanel.this.updateBoxes();
+            CreateStudentPanel.this.updateBoxes();
         }
 
     }
@@ -85,15 +85,15 @@ public class StudentPanel extends JPanel implements BaseStudent {
 
     private static final long serialVersionUID = 1L;
 
-    public StudentPanel() {
+    public CreateStudentPanel() {
         this(Main.getRoles());
     }
 
-    public StudentPanel(Role... roles) {
+    public CreateStudentPanel(Role... roles) {
         this(Arrays.asList(roles));
     }
 
-    public StudentPanel(Collection<Role> roles) {
+    public CreateStudentPanel(Collection<Role> roles) {
         this.allRoles = roles;
         init();
     }

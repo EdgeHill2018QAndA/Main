@@ -7,23 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
 
 import org.coursework.backend.group.Group;
-import org.coursework.backend.group.GroupSort;
 import org.coursework.backend.person.Person;
 import org.coursework.backend.person.staff.Staff;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
 import org.coursework.console.ConsoleHelper;
 import org.coursework.database.core.CoreDatabaseLink;
-import org.coursework.frontend.face.connection.ConnectionPanel;
 import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.login.LoginPanel;
-import org.coursework.frontend.face.people.StudentPanel;
 
 public class Main {
 
@@ -34,7 +30,6 @@ public class Main {
     private static int recommendedGroupSize = 5;
     private static int minRolesSize = 1;
     private static int maxRolesSize = 5;
-    private static GroupSort sorter = new GroupSort();
     private static Collection<Group> groups = new ArrayList<>();
     private static CoreDatabaseLink coreDatabaseLink;
     private static Person loggedInAs;
@@ -45,10 +40,11 @@ public class Main {
     }
 
     public static Set<Group> getGroups() {
-        return new HashSet<Group>(groups);
+        return new HashSet<>(groups);
     }
 
     public static void setGroups(Collection<Group> groupsC) {
+        System.out.println("Set groups");
         groups = groupsC;
     }
 
@@ -66,10 +62,6 @@ public class Main {
 
     public static void setDatabaseLink(CoreDatabaseLink link) {
         coreDatabaseLink = link;
-    }
-
-    public static GroupSort getGroupSort() {
-        return sorter;
     }
 
     public static int getRecommendedGroupSize() {
@@ -116,6 +108,10 @@ public class Main {
 
     public static Set<Person> getPeople() {
         return new HashSet<>(PEOPLE);
+    }
+    
+    public static <T extends Person> Set<T> getPeople(Class<T> class1){
+        return (Set<T>)PEOPLE.stream().filter(p -> class1.isInstance(p)).collect(Collectors.toSet());
     }
 
     public static Set<Role> getRoles() {

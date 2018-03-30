@@ -9,14 +9,14 @@ import org.coursework.backend.person.student.Student;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
 
-public interface BaseStudent extends BasePerson {
+public interface CreateBaseStudent extends CreateBasePerson {
 
     List<String> getSelectedRoles();
 
     Collection<Role> getChoosableRoles();
 
     public default Student createStudent() throws SQLException {
-        return new Student(getFirstName(), getLastName());
+        return new Student(getFirstName(), getLastName(), false);
     }
 
     public default StudentOption createOption() throws SQLException {

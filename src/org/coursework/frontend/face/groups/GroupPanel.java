@@ -34,16 +34,19 @@ public class GroupPanel extends JPanel implements BaseGroup {
     }
 
     private void init() {
+        System.out.println("Creating Group Panel");
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0;
-        add(new JLabel("Group: " + id, SwingConstants.CENTER), c);
-        for (Student student : group.getStudents()) {
+        add(new JLabel("Group: " + (1 + id), SwingConstants.CENTER), c);
+        System.out.println("Added Group JLabel");
+        group.getStudents().forEach((student) -> {
             c.gridy = +1;
             add(new JLabel(student.getName()), c);
-        }
+            System.out.println("Added student: " + student.getName());
+        });
     }
 
 }

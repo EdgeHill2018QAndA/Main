@@ -10,10 +10,12 @@ import javax.swing.JPanel;
 
 import org.coursework.Main;
 import org.coursework.backend.person.Permission;
-import org.coursework.frontend.face.Role.RolePanel;
+import org.coursework.frontend.face.Role.CreateRolePanel;
+import org.coursework.frontend.face.Role.ViewRolesPanel;
 import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.groups.GroupsPanel;
-import org.coursework.frontend.face.people.StudentPanel;
+import org.coursework.frontend.face.people.CreateStudentPanel;
+import org.coursework.frontend.face.people.ViewStudentsPanel;
 
 public class MenuPanel extends JPanel {
 
@@ -22,7 +24,7 @@ public class MenuPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent event) {
             MFrame frame = Main.getFrame();
-            frame.setContentPane(new StudentPanel());
+            frame.setContentPane(new CreateStudentPanel());
             frame.repaint();
             frame.revalidate();
         }
@@ -34,7 +36,7 @@ public class MenuPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             MFrame frame = Main.getFrame();
-            frame.setContentPane(new RolePanel());
+            frame.setContentPane(new CreateRolePanel());
             frame.repaint();
             frame.revalidate();
         }
@@ -53,6 +55,30 @@ public class MenuPanel extends JPanel {
 
     }
 
+    private class OnViewStudentsButton implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            MFrame frame = Main.getFrame();
+            frame.setContentPane(new ViewStudentsPanel());
+            frame.repaint();
+            frame.revalidate();
+        }
+
+    }
+    
+    private class OnViewRolesButton implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            MFrame frame = Main.getFrame();
+            frame.setContentPane(new ViewRolesPanel());
+            frame.repaint();
+            frame.revalidate();
+        }
+
+    }
+        
     private static final long serialVersionUID = 1L;
 
     public MenuPanel() {
@@ -71,6 +97,10 @@ public class MenuPanel extends JPanel {
         add(createNewRoleButton(), c);
         c.gridy = 2;
         add(viewGroups(), c);
+        c.gridy = 3;
+        add(viewStudents(), c);
+        c.gridy = 4;
+        add(viewRoles(), c);
     }
 
     private JButton createNewStudentButton() {
@@ -95,13 +125,25 @@ public class MenuPanel extends JPanel {
     private JButton viewGroups() {
         JButton button = new JButton("View Groups");
         button.addActionListener(new OnGroupsButton());
-        if (Main.getGroups().size() != 0) {
+        if (!Main.getGroups().isEmpty()) {
             if (!Main.getLoggedInAs().isPresent()) {
                 button.setEnabled(false);
-            } else if (!Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+            } else if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
                 button.setEnabled(false);
             }
         }
+        return button;
+    }
+    
+    private JButton viewStudents(){
+        JButton button = new JButton("View Students");
+        button.addActionListener(new OnViewStudentsButton());
+        return button;
+    }
+    
+    private JButton viewRoles(){
+        JButton button = new JButton("View Roles");
+        button.addActionListener(new OnViewRolesButton());
         return button;
     }
 

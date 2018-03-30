@@ -40,6 +40,7 @@ public class LoginPanel extends JPanel implements BaseLogin {
             Optional<Person> opPerson = LoginPanel.this.checkAuthorization();
             if(!opPerson.isPresent()){
                 LoginPanel.this.errorLabel.setText("Failed to find account with those details");
+                return;
             }
             LoginPanel.this.forceAuthorization(opPerson.get());
         }

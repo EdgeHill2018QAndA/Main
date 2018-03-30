@@ -1,6 +1,6 @@
 package org.coursework.frontend.base.people;
 
-public interface BasePerson {
+public interface CreateBasePerson {
 
     String getFirstName();
 

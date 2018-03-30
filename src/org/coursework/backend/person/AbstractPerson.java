@@ -12,7 +12,11 @@ public abstract class AbstractPerson implements Person {
     int id;
 
     public AbstractPerson(String firstName, String lastName) throws SQLException {
-        this(Main.getDatabaseLink().get().getTableSize("Accounts"), firstName, lastName);
+        this(getUniquieId(true), firstName, lastName);
+    }
+    
+    public AbstractPerson(String firstName, String lastName, boolean useSQL) throws SQLException{
+        this(getUniquieId(useSQL), firstName, lastName);
     }
 
     public AbstractPerson(int id, String firstName, String lastName) {
@@ -52,5 +56,11 @@ public abstract class AbstractPerson implements Person {
     public String getLastName() {
         return lastName;
     }
-
+    
+    private static int getUniquieId(boolean useDatabase) throws SQLException {
+        if(useDatabase){
+            return Main.getDatabaseLink().get().getTableSize("Accounts");
+        }
+        return Main.getPeople().size();
+    }
 }

@@ -11,6 +11,10 @@ public class Student extends AbstractPerson implements Person {
     public Student(String first, String last) throws SQLException {
         super(first, last);
     }
+    
+    public Student(String first, String last, boolean useSQL) throws SQLException {
+        super(first, last, useSQL);
+    }
 
     public Student(int id, String first, String last) {
         super(id, first, last);

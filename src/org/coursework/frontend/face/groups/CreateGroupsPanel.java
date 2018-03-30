@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -14,6 +16,8 @@ import javax.swing.ListSelectionModel;
 
 import org.coursework.Main;
 import org.coursework.backend.group.Group;
+import org.coursework.backend.group.GroupSort;
+import org.coursework.backend.person.student.Student;
 import org.coursework.backend.roles.Role;
 import org.coursework.frontend.face.frame.MFrame;
 
@@ -32,7 +36,8 @@ public class CreateGroupsPanel extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Set<Group> groups = Main.getGroupSort().sortGroups(list.getSelectedValuesList());
+            Set<Group> groups = new GroupSort().sortGroups(list.getSelectedValuesList());
+            System.out.println("Sorted groups: " + groups.size());
             Main.setGroups(groups);
             previousScreen();
         }
