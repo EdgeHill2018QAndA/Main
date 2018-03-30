@@ -8,17 +8,17 @@ import org.coursework.backend.person.Person;
 
 public class Staff extends AbstractPerson implements Person {
 
-	public Staff(String firstName, String lastName) throws SQLException {
-		super(firstName, lastName);
-	}
-	
-	public Staff(int id, String firstName, String lastName) {
-		super(id, firstName, lastName);
-	}
+    public Staff(String firstName, String lastName) throws SQLException {
+        super(firstName, lastName);
+    }
 
-	@Override
-	public Permission getPermission() {
-		return Permission.ADMIN;
-	}
+    public Staff(int id, String firstName, String lastName) {
+        super(id, firstName, lastName);
+    }
+
+    @Override
+    public Permission getPermission() {
+        return Permission.ADMIN;
+    }
 
 }

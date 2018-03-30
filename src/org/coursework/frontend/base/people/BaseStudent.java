@@ -9,33 +9,25 @@ import org.coursework.backend.person.student.Student;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
 
-public class BaseStudent extends BasePerson {
-	
-	public BaseStudent(Collection<Role> choosable) {
-		super(choosable);
-	}
+public interface BaseStudent extends BasePerson {
 
-	public List<String> getSelectedRoles(){
-		return selectedRoles;
-	}
-	
-	public Collection<Role> getChoosableRoles(){
-		return choosableRoles;
-	}
-	
-	public Student createStudent() throws SQLException {
-		return new Student(getFirstName(), getLastName());
-	}
-	
-	public StudentOption createOption() throws SQLException {
-		return createOption(createStudent());
-	}
-	
-	public StudentOption createOption(Student student) {
-		List<Role> roles = new ArrayList<>();
-		selectedRoles.stream().forEach(s -> choosableRoles.stream().filter(c -> c.getDisplayName().equals(s)).forEach(c -> roles.add(c)));
-		choosableRoles.stream().filter(c -> !roles.stream().anyMatch(r -> r.equals(c))).forEach(c -> roles.add(c));
-		return new StudentOption(student, roles);
-	}
+    List<String> getSelectedRoles();
+
+    Collection<Role> getChoosableRoles();
+
+    public default Student createStudent() throws SQLException {
+        return new Student(getFirstName(), getLastName());
+    }
+
+    public default StudentOption createOption() throws SQLException {
+        return createOption(createStudent());
+    }
+
+    public default StudentOption createOption(Student student) {
+        List<Role> roles = new ArrayList<>();
+        getSelectedRoles().stream().forEach(s -> getChoosableRoles().stream().filter(c -> c.getDisplayName().equals(s)).forEach(c -> roles.add(c)));
+        getChoosableRoles().stream().filter(c -> !roles.stream().anyMatch(r -> r.equals(c))).forEach(c -> roles.add(c));
+        return new StudentOption(student, roles);
+    }
 
 }

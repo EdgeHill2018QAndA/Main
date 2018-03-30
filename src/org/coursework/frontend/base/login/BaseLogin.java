@@ -5,33 +5,19 @@ import java.util.Optional;
 import org.coursework.Main;
 import org.coursework.backend.person.Person;
 
-public class BaseLogin {
-	
-	String firstName = "";
-	String lastName = "";
-	
-	public void setFirstName(String name) {
-		this.firstName = name;
-	}
-	
-	public String getFirstName() {
-		return this.firstName;
-	}
-	
-	public void setLastName(String name) {
-		this.lastName = name;
-	}
-	
-	public String getLastName() {
-		return this.lastName;
-	}
-	
-	public Optional<Person> attemptAuthorization() {
-		return Main.getPeople().stream().filter(p -> p.getFirstName().equalsIgnoreCase(firstName) && p.getLastName().equalsIgnoreCase(lastName)).findFirst();
-	}
-	
-	public void forceAuthorization(Person person) {
-		Main.setLoggedInAs(person);
-	}
+public interface BaseLogin {
+
+    public String getFirstName();
+    public String getLastName();
+    public void nextPage();
+
+    public default Optional<Person> checkAuthorization() {
+        return Main.getPeople().stream().filter(p -> p.getFirstName().equalsIgnoreCase(getFirstName()) && p.getLastName().equalsIgnoreCase(getLastName())).findFirst();
+    }
+
+    public default void forceAuthorization(Person person) {
+        Main.setLoggedInAs(person);
+        nextPage();
+    }
 
 }
