@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 
 import org.coursework.Main;
 import org.coursework.backend.group.Group;
+import org.coursework.backend.person.Permission;
 import org.coursework.frontend.base.groups.BaseGroups;
 import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.menu.MenuPanel;
@@ -34,7 +35,7 @@ public class GroupsPanel extends JPanel implements BaseGroups {
         }
 
     }
-    
+
     private class OnCancelListener implements ActionListener {
 
         @Override
@@ -44,19 +45,19 @@ public class GroupsPanel extends JPanel implements BaseGroups {
             frame.repaint();
             frame.revalidate();
         }
-        
+
     }
 
     List<Group> groups = new ArrayList<>();
 
-    public GroupsPanel(){
+    public GroupsPanel() {
         this(Main.getGroups());
     }
-    
-    public GroupsPanel(Group... groups){
+
+    public GroupsPanel(Group... groups) {
         this(Arrays.asList(groups));
     }
-    
+
     public GroupsPanel(Collection<Group> groups) {
         this.groups.addAll(groups);
         System.out.println("GroupsPanel: Groups: " + groups.size());
@@ -95,6 +96,9 @@ public class GroupsPanel extends JPanel implements BaseGroups {
         add(cancelButton, c);
         createGroups.addActionListener(new SortGroup());
         cancelButton.addActionListener(new OnCancelListener());
+        if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+            createGroups.setVisible(false);
+        }
     }
 
 }

@@ -11,7 +11,7 @@ public class Staff extends AbstractPerson implements Person {
     public Staff(String firstName, String lastName) throws SQLException {
         super(firstName, lastName);
     }
-    
+
     public Staff(String firstName, String lastName, boolean useSQL) throws SQLException {
         super(firstName, lastName, useSQL);
     }

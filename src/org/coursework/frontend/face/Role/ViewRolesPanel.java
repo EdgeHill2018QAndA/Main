@@ -18,7 +18,7 @@ import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.menu.MenuPanel;
 
 public class ViewRolesPanel extends JPanel {
-    
+
     private class OnCancelButton implements ActionListener {
 
         @Override
@@ -28,25 +28,25 @@ public class ViewRolesPanel extends JPanel {
             frame.repaint();
             frame.revalidate();
         }
-        
+
     }
-    
+
     List<Role> roles = new ArrayList<>();
-    
-    public ViewRolesPanel(){
+
+    public ViewRolesPanel() {
         this(Main.getRoles());
     }
-    
-    public ViewRolesPanel(Role... roles){
+
+    public ViewRolesPanel(Role... roles) {
         this(Arrays.asList(roles));
     }
-    
-    public ViewRolesPanel(Collection<Role> roles){
+
+    public ViewRolesPanel(Collection<Role> roles) {
         this.roles.addAll(roles);
         init();
     }
-    
-    private void init(){
+
+    private void init() {
         JPanel rolesPanel = new JPanel();
         JButton cancelPanel = new JButton("Cancel");
         cancelPanel.addActionListener(new OnCancelButton());
@@ -65,5 +65,5 @@ public class ViewRolesPanel extends JPanel {
         c.gridy = 1;
         add(cancelPanel, c);
     }
-    
+
 }

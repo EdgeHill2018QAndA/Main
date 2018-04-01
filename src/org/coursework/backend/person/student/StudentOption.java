@@ -11,6 +11,8 @@ import java.util.Set;
 import org.coursework.Main;
 
 import org.coursework.backend.roles.Role;
+import org.coursework.database.core.CoreDatabaseLink;
+import org.coursework.database.table.TableBuilder;
 import org.coursework.database.table.TableLink;
 
 public class StudentOption implements TableLink {
@@ -18,21 +20,21 @@ public class StudentOption implements TableLink {
     int id;
     Student student;
     List<Role> roles = new ArrayList<>();
-    
+
     public StudentOption(Student student, Role... roles) throws SQLException {
-        this(getUniquieId(false), student, roles);
+        this(student, true, roles);
     }
-    
-    public StudentOption(Student student, Collection<Role> roles) throws SQLException{
-        this(getUniquieId(false), student, roles);
+
+    public StudentOption(Student student, Collection<Role> roles) throws SQLException {
+        this(student, true, roles);
     }
-    
-    public StudentOption(Student student, boolean useDatabase, Role... roles) throws SQLException{
-        this(getUniquieId(useDatabase), student, roles);
+
+    public StudentOption(Student student, boolean useDatabase, Role... roles) throws SQLException {
+        this(TableLink.getUniquieId(StudentOptionTableBuilder.TABLE_NAME, useDatabase), student, roles);
     }
-    
-    public StudentOption(Student student, boolean useDatabase, Collection<Role> roles) throws SQLException{
-        this(getUniquieId(useDatabase), student, roles);
+
+    public StudentOption(Student student, boolean useDatabase, Collection<Role> roles) throws SQLException {
+        this(TableLink.getUniquieId(StudentOptionTableBuilder.TABLE_NAME, useDatabase), student, roles);
     }
 
     public StudentOption(int id, Student student, Role... roles) {
@@ -44,8 +46,9 @@ public class StudentOption implements TableLink {
         this.roles.addAll(collection);
         this.id = id;
     }
-    
-    public int getId(){
+
+    @Override
+    public int getId() {
         return id;
     }
 
@@ -60,8 +63,8 @@ public class StudentOption implements TableLink {
         return Optional.of(roles.get(0));
     }
 
-    public Set<Role> getRoles() {
-        return new HashSet<>(roles);
+    public List<Role> getRoles() {
+        return roles;
     }
 
     public void registerRole(Role... roles) {
@@ -75,26 +78,5 @@ public class StudentOption implements TableLink {
             this.roles.remove(role);
         }
     }
-    
-    @Override
-    public String getTableName() {
-        return "StudentOptions"; 
-    }
 
-    @Override
-    public String[] getTableColumns() {
-        return new String[]{"id", "studentid", "roleGroupId"};
-    }
-
-    @Override
-    public void saveInTable() throws SQLException {
-        
-    }
-    
-    private static int getUniquieId(boolean useDatabase) throws SQLException {
-        if(useDatabase){
-            return Main.getDatabaseLink().get().getTableSize("Accounts");
-        }
-        return Main.getPeople().size();
-    }
 }

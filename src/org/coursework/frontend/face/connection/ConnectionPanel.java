@@ -18,6 +18,7 @@ import org.coursework.frontend.face.frame.MFrame;
 
 import org.coursework.frontend.base.connection.BaseConnection;
 import org.coursework.frontend.face.login.LoginPanel;
+import org.coursework.frontend.face.people.CreateStaffPanel;
 
 public class ConnectionPanel extends JPanel implements BaseConnection {
 
@@ -27,6 +28,15 @@ public class ConnectionPanel extends JPanel implements BaseConnection {
         public void actionPerformed(ActionEvent event) {
             try {
                 ConnectionPanel.this.attemptConnection();
+                if (!ConnectionPanel.this.isDatabaseCreated()) {
+                    ConnectionPanel.this.createDatabase();
+                    MFrame frame = Main.getFrame();
+                    frame.setContentPane(new CreateStaffPanel());
+                    frame.repaint();
+                    frame.revalidate();
+                    return;
+                }
+                ConnectionPanel.this.fillDatabase();
             } catch (IOException e) {
                 ConnectionPanel.this.errorLabel.setText("The required driver could not be loaded");
                 e.printStackTrace();

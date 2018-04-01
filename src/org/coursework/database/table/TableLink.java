@@ -1,12 +1,17 @@
 package org.coursework.database.table;
 
 import java.sql.SQLException;
+import org.coursework.Main;
 
 public interface TableLink {
 
-    public String getTableName();
+    public int getId();
 
-    public String[] getTableColumns();
+    public static int getUniquieId(String tableName, boolean useDatabase) throws SQLException {
+        if (useDatabase) {
+            return Main.getDatabaseLink().get().getTableSize(tableName);
+        }
+        return Main.getPeople().size();
+    }
 
-    public void saveInTable() throws SQLException;
 }

@@ -1,12 +1,15 @@
 package org.coursework.database.core;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.coursework.Main;
 
+import org.coursework.database.table.TableBuilder;
 import org.coursework.database.table.TableLink;
 
 public class CoreDatabaseLink {
@@ -55,10 +58,11 @@ public class CoreDatabaseLink {
 
     public void executeUpdate(String sql) throws SQLException {
         Statement statement = this.connection.createStatement();
+        System.out.println("\t" + sql);
         statement.executeUpdate(sql);
     }
 
-    public int getTableSize(TableLink link) throws SQLException {
+    public int getTableSize(TableBuilder link) throws SQLException {
         return getTableSize(link.getTableName());
     }
 
@@ -66,14 +70,18 @@ public class CoreDatabaseLink {
         String query = "SELECT count(*) FROM " + tableName;
         PreparedStatement statement = this.connection.prepareStatement(query);
         ResultSet set = statement.executeQuery();
-        return set.getInt(1);
+        try {
+            return set.getInt(1);
+        } catch (SQLException e) {
+            return 0;
+        }
     }
 
-    public void createTable(TableLink link) throws SQLException {
+    public void createTable(TableBuilder link) throws SQLException {
 
     }
 
-    public void insertInto(TableLink link, Object... object) throws SQLException {
+    public void insertInto(TableBuilder link, Object... object) throws SQLException {
         PreparedStatement statement;
         String marks = null;
         String col = null;
@@ -91,9 +99,63 @@ public class CoreDatabaseLink {
         statement = this.connection.prepareStatement(query);
         for (int A = 0; A < object.length; A++) {
             Object obj = object[A];
-            statement.setObject(A, obj);
+            statement.setObject((A + 1), obj);
         }
         statement.executeUpdate();
     }
 
+    public boolean isTablePresent(TableBuilder<? extends TableLink> builder) throws SQLException {
+        DatabaseMetaData dmd = this.connection.getMetaData();
+        ResultSet table = dmd.getTables(null, null, builder.getTableName(), null);
+        while(table.next()){
+            String tName = table.getString("TABLE_NAME");
+            System.out.println("Searching: " + builder.getTableName() + " - " + tName);
+            if((tName != null) && (tName.equals(builder.getTableName()))){
+                System.out.println("return true;");
+                return true;
+            }
+        }
+        System.out.println("return false");
+        return false;
+    }
+
+    public void createDatabase() {
+        Main.getTableBuilders().stream().forEach(b -> {
+            try {
+                System.out.println("Checking table present");
+                if (!isTablePresent(b)) {
+                    System.out.println("table was not present");
+                    String query = "CREATE TABLE " + b.getTableName() + " (";
+                    for (String columnName : b.getTableColumns()) {
+                        query = query + b.getTableColumnSQL(columnName) + ", ";
+                    }
+                    query = query + "PRIMARY KEY (" + b.getTableColumns()[0] + "))";
+                    executeUpdate(query);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void loadData() {
+        Main.getTableBuilders().stream().forEach(b -> {
+            try {
+                b.registerAllWithMain(CoreDatabaseLink.this);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    public void saveData() {
+        Main.getTableBuilders().stream().forEach(b -> {
+            try {
+                b.saveAllInTable();
+            } catch (SQLException ex) {
+                System.err.println("Failed to save to database in table: " + b.getTableName());
+                ex.printStackTrace();
+            }
+        });
+    }
 }

@@ -1,8 +1,6 @@
 package org.coursework.backend.roles;
 
 import java.sql.SQLException;
-import org.coursework.Main;
-import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableLink;
 
 public class Role implements TableLink {
@@ -11,19 +9,20 @@ public class Role implements TableLink {
     String displayName;
 
     public Role(String displayName) throws SQLException {
-        this(getUniquieId(true), displayName);
+        this(displayName, true);
     }
-    
-    public Role(String displayName, boolean useDatabase) throws SQLException{
-        this(getUniquieId(useDatabase), displayName);
+
+    public Role(String displayName, boolean useDatabase) throws SQLException {
+        this(TableLink.getUniquieId(RoleTableBuilder.TABLE_NAME, useDatabase), displayName);
     }
-    
-    public Role(int id, String displayName){
+
+    public Role(int id, String displayName) {
         this.id = id;
         this.displayName = displayName;
     }
-    
-    public int getId(){
+
+    @Override
+    public int getId() {
         return id;
     }
 
@@ -50,29 +49,6 @@ public class Role implements TableLink {
     @Override
     public String toString() {
         return this.displayName;
-    }
-
-    @Override
-    public String getTableName() {
-        return "Roles";
-    }
-
-    @Override
-    public String[] getTableColumns() {
-        return new String[]{"id", "name"};
-    }
-
-    @Override
-    public void saveInTable() throws SQLException {
-        CoreDatabaseLink link = Main.getDatabaseLink().get();
-        link.insertInto(this, id, getDisplayName());
-    }
-    
-    private static int getUniquieId(boolean useDatabase) throws SQLException {
-        if(useDatabase){
-            return Main.getDatabaseLink().get().getTableSize("Roles");
-        }
-        return Main.getPeople().size();
     }
 
 }

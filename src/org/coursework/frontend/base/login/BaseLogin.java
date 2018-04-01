@@ -8,7 +8,9 @@ import org.coursework.backend.person.Person;
 public interface BaseLogin {
 
     public String getFirstName();
+
     public String getLastName();
+
     public void nextPage();
 
     public default Optional<Person> checkAuthorization() {

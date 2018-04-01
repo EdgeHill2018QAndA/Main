@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.coursework.Main;
+import org.coursework.backend.person.Permission;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
 import org.coursework.frontend.face.frame.MFrame;
@@ -201,6 +202,12 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
         panel.add(acceptButton);
         cancelButton.addActionListener(new OnCancelListener());
         acceptButton.addActionListener(new OnSelectListener());
+        if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+            firstNameField.setEditable(false);
+            lastNameField.setEditable(false);
+            firstNameField.setText(Main.getLoggedInAs().get().getFirstName());
+            lastNameField.setText(Main.getLoggedInAs().get().getLastName());
+        }
         updateBoxes();
     }
 

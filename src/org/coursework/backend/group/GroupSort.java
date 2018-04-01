@@ -1,5 +1,6 @@
 package org.coursework.backend.group;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,8 +18,8 @@ public class GroupSort {
 
     List<StudentOption> options = new ArrayList<>();
     //Set<Group> groups;
-    
-    public GroupSort(){
+
+    public GroupSort() {
         this(Main.getEnteredOptions());
     }
 
@@ -79,15 +80,19 @@ public class GroupSort {
         List<Group> groups = new ArrayList<>();
         while (!options.isEmpty()) {
             System.out.println("On While");
-            Group group = createGroup(groupsMustHave);
-            System.out.println("Adding: " + group.getStudents());
-            groups.add(group);
+            try {
+                Group group = createGroup(groupsMustHave);
+                System.out.println("Adding: " + group.getStudents());
+                groups.add(group);
+            } catch (SQLException e) {
+                System.err.println("Failed to create group");
+            }
         }
         return new HashSet<>(groups);
     }
 
     //Creates a single group and marks the students used in the group, so not to use them again.
-    private Group createGroup(Collection<Role> groupMustHave) {
+    private Group createGroup(Collection<Role> groupMustHave) throws SQLException {
         List<StudentOption> list = new ArrayList<>();
         int groupSize = Main.getRecommendedGroupSize();
         for (int A = 0; A < groupSize; A++) {
@@ -97,7 +102,7 @@ public class GroupSort {
             } else {
                 options = getPreferredNeededStudents(list, groupMustHave);
             }
-            if(options.isEmpty()){
+            if (options.isEmpty()) {
                 break;
             }
             StudentOption student = pickRandom(options);

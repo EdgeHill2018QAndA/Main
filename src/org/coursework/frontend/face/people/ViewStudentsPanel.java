@@ -20,7 +20,7 @@ import org.coursework.frontend.face.frame.MFrame;
 import org.coursework.frontend.face.menu.MenuPanel;
 
 public class ViewStudentsPanel extends JPanel {
-    
+
     private class OnCancelButton implements ActionListener {
 
         @Override
@@ -30,29 +30,29 @@ public class ViewStudentsPanel extends JPanel {
             frame.repaint();
             frame.revalidate();
         }
-        
+
     }
-    
+
     List<Student> students = new ArrayList<>();
-    
-    public ViewStudentsPanel(){
+
+    public ViewStudentsPanel() {
         this(Main.getPeople(Student.class));
     }
-    
-    public ViewStudentsPanel(Student... students){
+
+    public ViewStudentsPanel(Student... students) {
         this(Arrays.asList(students));
     }
-    
-    public ViewStudentsPanel(Collection<Student> students){
+
+    public ViewStudentsPanel(Collection<Student> students) {
         this.students.addAll(students);
         init();
     }
-    
-    public Set<Student> getStudents(){
+
+    public Set<Student> getStudents() {
         return new HashSet<>(students);
     }
-    
-    private void init(){
+
+    private void init() {
         JPanel studentsPanel = new JPanel();
         studentsPanel.setLayout(new FlowLayout());
         students.forEach(s -> studentsPanel.add(new JLabel(s.getName())));
@@ -71,5 +71,5 @@ public class ViewStudentsPanel extends JPanel {
         c.gridy = 1;
         add(cancelButton, c);
     }
-    
+
 }

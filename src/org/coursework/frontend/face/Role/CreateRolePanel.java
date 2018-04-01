@@ -5,10 +5,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -22,69 +24,73 @@ import org.coursework.frontend.face.menu.MenuPanel;
 import org.coursework.frontend.base.Role.CreateBaseRole;
 
 public class CreateRolePanel extends JPanel implements CreateBaseRole {
-    
+
     private class OnCancelListener implements ActionListener {
-    
+
         @Override
         public void actionPerformed(ActionEvent e) {
             previousPage();
         }
-    
+
     }
-    
+
     private class OnDeleteSelectedListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             JList list = CreateRolePanel.this.currentRoles;
-            DefaultListModel<Role> model = (DefaultListModel<Role>)list.getModel();
+            DefaultListModel<Role> model = (DefaultListModel<Role>) list.getModel();
             list.getSelectedValuesList().forEach(v -> {
-                Role role = (Role)v;
+                Role role = (Role) v;
                 model.removeElement(role);
                 Main.deregister(role);
             });
         }
-        
+
     }
 
     private class OnCreateListener implements ActionListener {
-    
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            Role role = CreateRolePanel.this.createRole();
-            JLabel label = CreateRolePanel.this.errorLabel;
-            if (!CreateRolePanel.this.registerRole(role)){
-                label.setText("Role has already been created");
-                return;
+            try {
+                Role role = CreateRolePanel.this.createRole();
+                JLabel label = CreateRolePanel.this.errorLabel;
+                if (!CreateRolePanel.this.registerRole(role)) {
+                    label.setText("Role has already been created");
+                    return;
+                }
+                label.setText("Created " + role.getDisplayName());
+                ((DefaultListModel<Role>) CreateRolePanel.this.currentRoles.getModel()).addElement(role);
+            } catch (SQLException e2) {
+                JOptionPane.showMessageDialog(null, e2.getMessage(), "Error: Could not create role", JOptionPane.ERROR_MESSAGE);
+                e2.printStackTrace();
             }
-            label.setText("Created " + role.getDisplayName());
-            ((DefaultListModel<Role>)CreateRolePanel.this.currentRoles.getModel()).addElement(role);
         }
-    
     }
 
     JTextField roleNameField = new JTextField();
     JLabel errorLabel = new JLabel();
     JList currentRoles;
     JButton deleteSelectedRoles = new JButton("Delete selected roles");
-    
-    public CreateRolePanel(){
+
+    public CreateRolePanel() {
         init();
     }
-    
-    public void previousPage(){
+
+    public void previousPage() {
         MFrame frame = Main.getFrame();
         frame.setContentPane(new MenuPanel());
         frame.repaint();
         frame.revalidate();
     }
-    
+
     @Override
     public String getRoleName() {
         return roleNameField.getText();
     }
-    
-    private void init(){
+
+    private void init() {
         JButton createButton = new JButton("Create Role");
         JButton cancelButton = new JButton("Cancel");
         deleteSelectedRoles.addActionListener(new OnDeleteSelectedListener());
@@ -128,5 +134,5 @@ public class CreateRolePanel extends JPanel implements CreateBaseRole {
         c.gridy = 5;
         add(buttonPanel, c);
     }
-    
+
 }

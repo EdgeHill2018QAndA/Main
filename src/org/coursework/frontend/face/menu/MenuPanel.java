@@ -30,7 +30,7 @@ public class MenuPanel extends JPanel {
         }
 
     }
-    
+
     private class OnRoleButton implements ActionListener {
 
         @Override
@@ -40,7 +40,7 @@ public class MenuPanel extends JPanel {
             frame.repaint();
             frame.revalidate();
         }
-        
+
     }
 
     private class OnGroupsButton implements ActionListener {
@@ -66,7 +66,7 @@ public class MenuPanel extends JPanel {
         }
 
     }
-    
+
     private class OnViewRolesButton implements ActionListener {
 
         @Override
@@ -78,7 +78,7 @@ public class MenuPanel extends JPanel {
         }
 
     }
-        
+
     private static final long serialVersionUID = 1L;
 
     public MenuPanel() {
@@ -104,7 +104,12 @@ public class MenuPanel extends JPanel {
     }
 
     private JButton createNewStudentButton() {
-        JButton button = new JButton("New Student");
+        JButton button = null;
+        if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+            button = new JButton("Select Roles");
+        } else {
+            button = new JButton("New Student");
+        }
         button.addActionListener(new OnStudentButton());
         return button;
     }
@@ -114,10 +119,10 @@ public class MenuPanel extends JPanel {
         button.addActionListener(new OnRoleButton());
         if (!Main.getLoggedInAs().isPresent()) {
             System.out.println("Login is not present");
-            button.setEnabled(false);
+            button.setVisible(false);
         } else if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
             System.out.println("Login has permission of " + Main.getLoggedInAs().get().getPermission().name());
-            button.setEnabled(false);
+            button.setVisible(false);
         }
         return button;
     }
@@ -134,14 +139,17 @@ public class MenuPanel extends JPanel {
         }
         return button;
     }
-    
-    private JButton viewStudents(){
+
+    private JButton viewStudents() {
         JButton button = new JButton("View Students");
         button.addActionListener(new OnViewStudentsButton());
+        if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+            button.setVisible(false);
+        }
         return button;
     }
-    
-    private JButton viewRoles(){
+
+    private JButton viewRoles() {
         JButton button = new JButton("View Roles");
         button.addActionListener(new OnViewRolesButton());
         return button;
