@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.swing.JPanel;
@@ -156,6 +158,49 @@ public class Main {
         for (StudentOption option : options) {
             ENTERED_OPTIONS.remove(option);
         }
+    }
+    
+    public static void saveToDatabase(){
+        saveToDatabase(coreDatabaseLink);
+    }
+    
+    public static void saveToDatabase(CoreDatabaseLink link){
+        saveRolesToDatabase();
+        savePeopleToDatabase();
+        saveOptionsToDatabase();
+    }
+    
+    private static void saveRolesToDatabase() {
+        getRoles().forEach(r -> {
+            try{
+                r.saveInTable();
+            }catch(SQLException e){
+                System.err.println("Failed to save Role " + r.getDisplayName() + ":" + r.getId());
+                e.printStackTrace();
+            }
+        });
+    }
+    
+    private static void savePeopleToDatabase(){
+        getPeople().forEach(p -> {
+            try {
+                p.saveInTable();
+            } catch (SQLException ex) {
+                System.err.println("Failed to save person " + p.getName());
+                ex.printStackTrace();
+            }
+        });
+    }
+    
+    private static void saveOptionsToDatabase(){
+        getEnteredOptions().stream().forEach(o -> {
+            try {
+                o.saveInTable();
+            } catch (SQLException ex) {
+                System.err.println("Could not save StudentOption: " + o.getStudent().getName() + ", " + o.getRoles().toString());
+                ex.printStackTrace();
+            }
+        });
     }
 
     public static void main(String[] args) {

@@ -206,7 +206,7 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
 
     private JComboBox<Role> createRoleBox() {
         JComboBox<Role> first = new JComboBox<>();
-        first.addItem(new Role(""));
+        first.addItem(new Role(Integer.MAX_VALUE, ""));
         allRoles.stream().filter(r -> !chosenRoles.stream().anyMatch(c -> c.getSelectedItem().equals(r))).forEach(f -> first.addItem(f));
         first.addItemListener(new OnItemSelectListener());
         return first;

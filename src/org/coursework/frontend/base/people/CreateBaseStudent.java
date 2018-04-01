@@ -23,7 +23,7 @@ public interface CreateBaseStudent extends CreateBasePerson {
         return createOption(createStudent());
     }
 
-    public default StudentOption createOption(Student student) {
+    public default StudentOption createOption(Student student) throws SQLException {
         List<Role> roles = new ArrayList<>();
         getSelectedRoles().stream().forEach(s -> getChoosableRoles().stream().filter(c -> c.getDisplayName().equals(s)).forEach(c -> roles.add(c)));
         getChoosableRoles().stream().filter(c -> !roles.stream().anyMatch(r -> r.equals(c))).forEach(c -> roles.add(c));

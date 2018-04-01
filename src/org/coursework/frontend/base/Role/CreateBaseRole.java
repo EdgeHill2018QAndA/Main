@@ -1,5 +1,6 @@
 package org.coursework.frontend.base.Role;
 
+import java.sql.SQLException;
 import org.coursework.Main;
 import org.coursework.backend.roles.Role;
 
@@ -7,7 +8,7 @@ public interface CreateBaseRole {
     
     public String getRoleName();
     
-    public default Role createRole(){
+    public default Role createRole() throws SQLException{
         return new Role(getRoleName());
     }
     
