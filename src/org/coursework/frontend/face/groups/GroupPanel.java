@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.coursework.backend.group.Group;
-import org.coursework.backend.person.student.Student;
 import org.coursework.frontend.base.groups.BaseGroup;
 
 public class GroupPanel extends JPanel implements BaseGroup {

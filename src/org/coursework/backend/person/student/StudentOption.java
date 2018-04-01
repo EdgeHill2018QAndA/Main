@@ -4,15 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import org.coursework.Main;
 
 import org.coursework.backend.roles.Role;
-import org.coursework.database.core.CoreDatabaseLink;
-import org.coursework.database.table.TableBuilder;
 import org.coursework.database.table.TableLink;
 
 public class StudentOption implements TableLink {

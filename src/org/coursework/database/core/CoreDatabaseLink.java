@@ -62,7 +62,7 @@ public class CoreDatabaseLink {
         statement.executeUpdate(sql);
     }
 
-    public int getTableSize(TableBuilder link) throws SQLException {
+    public int getTableSize(TableBuilder<? extends TableLink> link) throws SQLException {
         return getTableSize(link.getTableName());
     }
 
@@ -77,11 +77,7 @@ public class CoreDatabaseLink {
         }
     }
 
-    public void createTable(TableBuilder link) throws SQLException {
-
-    }
-
-    public void insertInto(TableBuilder link, Object... object) throws SQLException {
+    public void insertInto(TableBuilder<? extends TableLink> link, Object... object) throws SQLException {
         PreparedStatement statement;
         String marks = null;
         String col = null;

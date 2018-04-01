@@ -50,6 +50,8 @@ public class LoginPanel extends JPanel implements BaseLogin {
     JTextField firstNameField = new JTextField();
     JTextField lastNameField = new JTextField();
     JLabel errorLabel = new JLabel();
+    
+	private static final long serialVersionUID = 1L;
 
     public LoginPanel() {
         init();

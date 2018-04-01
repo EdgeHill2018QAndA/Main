@@ -19,9 +19,11 @@ public interface TableBuilder<T extends TableLink> {
 
     public Set<T> getDataFromMain();
 
-    public void registerWithMain(T... value);
+    @SuppressWarnings("unchecked")
+	public void registerWithMain(T... value);
 
-    public default void registerWithMain(Collection<T> values) {
+    @SuppressWarnings("unchecked")
+	public default void registerWithMain(Collection<T> values) {
         values.stream().forEach(r -> {
             System.out.println("Register with main: " + r.getClass().getSimpleName());
             registerWithMain(r);

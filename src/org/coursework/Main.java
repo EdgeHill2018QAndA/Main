@@ -1,6 +1,5 @@
 package org.coursework;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -119,7 +118,8 @@ public class Main {
         return new HashSet<>(PEOPLE);
     }
 
-    public static <T extends Person> Set<T> getPeople(Class<T> class1) {
+    @SuppressWarnings("unchecked")
+	public static <T extends Person> Set<T> getPeople(Class<T> class1) {
         return (Set<T>) PEOPLE.stream().filter(p -> class1.isInstance(p)).collect(Collectors.toSet());
     }
 
@@ -149,7 +149,8 @@ public class Main {
         }
     }
 
-    public static void register(TableBuilder<? extends TableLink>... builders) {
+    @SafeVarargs
+	public static void register(TableBuilder<? extends TableLink>... builders) {
         for (TableBuilder<? extends TableLink> builder : builders) {
             TABLE_BUILDERS.add(builder);
         }
@@ -173,7 +174,8 @@ public class Main {
         }
     }
 
-    public static void deregister(TableBuilder<? extends TableLink>... builders) {
+    @SafeVarargs
+	public static void deregister(TableBuilder<? extends TableLink>... builders) {
         for (TableBuilder<? extends TableLink> builder : builders) {
             TABLE_BUILDERS.remove(builder);
         }

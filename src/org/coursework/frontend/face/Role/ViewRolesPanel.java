@@ -32,6 +32,8 @@ public class ViewRolesPanel extends JPanel {
     }
 
     List<Role> roles = new ArrayList<>();
+    
+	private static final long serialVersionUID = 1L;
 
     public ViewRolesPanel() {
         this(Main.getRoles());

@@ -24,7 +24,7 @@ import org.coursework.frontend.face.menu.MenuPanel;
 
 public class GroupsPanel extends JPanel implements BaseGroups {
 
-    private class SortGroup implements ActionListener {
+	private class SortGroup implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
@@ -49,6 +49,8 @@ public class GroupsPanel extends JPanel implements BaseGroups {
     }
 
     List<Group> groups = new ArrayList<>();
+    
+	private static final long serialVersionUID = 1L;
 
     public GroupsPanel() {
         this(Main.getGroups());

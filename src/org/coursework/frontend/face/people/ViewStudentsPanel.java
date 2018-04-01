@@ -34,6 +34,8 @@ public class ViewStudentsPanel extends JPanel {
     }
 
     List<Student> students = new ArrayList<>();
+    
+	private static final long serialVersionUID = 1L;
 
     public ViewStudentsPanel() {
         this(Main.getPeople(Student.class));

@@ -13,7 +13,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
@@ -38,7 +37,7 @@ public class CreateRolePanel extends JPanel implements CreateBaseRole {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JList list = CreateRolePanel.this.currentRoles;
+            JList<Role> list = CreateRolePanel.this.currentRoles;
             DefaultListModel<Role> model = (DefaultListModel<Role>) list.getModel();
             list.getSelectedValuesList().forEach(v -> {
                 Role role = (Role) v;
@@ -71,8 +70,10 @@ public class CreateRolePanel extends JPanel implements CreateBaseRole {
 
     JTextField roleNameField = new JTextField();
     JLabel errorLabel = new JLabel();
-    JList currentRoles;
+    JList<Role> currentRoles;
     JButton deleteSelectedRoles = new JButton("Delete selected roles");
+    
+	private static final long serialVersionUID = 1L;
 
     public CreateRolePanel() {
         init();
@@ -101,7 +102,7 @@ public class CreateRolePanel extends JPanel implements CreateBaseRole {
         buttonPanel.add(cancelButton);
         buttonPanel.add(createButton);
         DefaultListModel<Role> model = new DefaultListModel<>();
-        this.currentRoles = new JList(model);
+        this.currentRoles = new JList<>(model);
         this.currentRoles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         Main.getRoles().forEach(r -> {
             model.addElement(r);
