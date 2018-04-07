@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.coursework.Main;
+import org.coursework.backend.person.Person;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
 
@@ -58,6 +59,11 @@ public class GroupTableBuilder implements TableBuilder<Group> {
     @Override
     public Set<Group> getDataFromMain() {
         return Main.getGroups();
+    }
+    
+    @Override
+    public Group[] toArray(int size) {
+        return new Group[size];
     }
 
 }

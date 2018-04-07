@@ -3,6 +3,7 @@ package org.coursework.backend.person;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,6 +77,13 @@ public class PersonTableBuilder implements TableBuilder<Person> {
         }
         return new HashSet<>(people);
     }
+    
+    /*@Override
+    public void registerWithMain(Collection<Person> people){
+        Person[] peopleArray = new Person[people.size()];
+        people.toArray(peopleArray);
+        registerWithMain(peopleArray);
+    }*/
 
     @Override
     public void registerWithMain(Person... value) {
@@ -85,6 +93,11 @@ public class PersonTableBuilder implements TableBuilder<Person> {
     @Override
     public Set<Person> getDataFromMain() {
         return Main.getPeople();
+    }
+
+    @Override
+    public Person[] toArray(int size) {
+        return new Person[size];
     }
 
 }

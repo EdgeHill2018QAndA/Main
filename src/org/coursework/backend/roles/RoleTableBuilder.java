@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.coursework.Main;
+import org.coursework.backend.person.Person;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
 
@@ -63,6 +64,11 @@ public class RoleTableBuilder implements TableBuilder<Role> {
     @Override
     public Set<Role> getDataFromMain() {
         return Main.getRoles();
+    }
+    
+    @Override
+    public Role[] toArray(int size) {
+        return new Role[size];
     }
 
 }

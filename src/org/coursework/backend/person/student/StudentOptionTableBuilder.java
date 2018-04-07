@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.coursework.Main;
 import org.coursework.backend.group.Group;
+import org.coursework.backend.person.Person;
 import org.coursework.backend.roles.Role;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
@@ -122,6 +123,11 @@ public class StudentOptionTableBuilder implements TableBuilder<StudentOption> {
     @Override
     public Set<StudentOption> getDataFromMain() {
         return Main.getEnteredOptions();
+    }
+    
+    @Override
+    public StudentOption[] toArray(int size) {
+        return new StudentOption[size];
     }
 
 }
