@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.JTextField;
 
 import org.coursework.Main;
 import org.coursework.backend.person.Permission;
+import org.coursework.backend.person.student.Student;
 import org.coursework.backend.person.student.StudentOption;
 import org.coursework.backend.roles.Role;
 import org.coursework.frontend.face.frame.MFrame;
@@ -45,6 +47,10 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(CreateStudentPanel.this.getModifyStudent().isPresent()){
+                CreateStudentPanel.this.updateOption();
+                return;
+            }
             try {
                 StudentOption option = CreateStudentPanel.this.createOption();
                 Main.register(option);
@@ -83,19 +89,29 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
     Collection<Role> allRoles;
     JPanel comboPanel = new JPanel();
     List<JComboBox<Role>> chosenRoles = new ArrayList<>();
+    Student modify;
 
     private static final long serialVersionUID = 1L;
 
     public CreateStudentPanel() {
-        this(Main.getRoles());
+        this(null, Main.getRoles());
+    }
+    
+    public CreateStudentPanel(Student student){
+        this(student, Main.getRoles());
     }
 
     public CreateStudentPanel(Role... roles) {
-        this(Arrays.asList(roles));
+        this(null, Arrays.asList(roles));
+    }
+    
+    public CreateStudentPanel(Student student, Role... roles){
+        this(student, Arrays.asList(roles));
     }
 
-    public CreateStudentPanel(Collection<Role> roles) {
+    public CreateStudentPanel(Student modify, Collection<Role> roles) {
         this.allRoles = roles;
+        this.modify = modify;
         init();
     }
 
@@ -147,6 +163,11 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
         comboPanel.revalidate();
     }
 
+    @Override
+    public Optional<Student> getModifyStudent(){
+        return Optional.ofNullable(modify);
+    }
+    
     @Override
     public String getFirstName() {
         return firstNameField.getText();
@@ -207,6 +228,18 @@ public class CreateStudentPanel extends JPanel implements CreateBaseStudent {
             lastNameField.setEditable(false);
             firstNameField.setText(Main.getLoggedInAs().get().getFirstName());
             lastNameField.setText(Main.getLoggedInAs().get().getLastName());
+        }
+        if(modify != null){
+            acceptButton.setText("Update");
+            Optional<StudentOption> opOption = getModifyOption();
+            if(opOption.isPresent()){
+                StudentOption option = opOption.get();
+                for(Role role : option.getRoles()){
+                    JComboBox<Role> roleBox = createRoleBox();
+                    roleBox.setSelectedItem(role);
+                    chosenRoles.add(roleBox);
+                }
+            }
         }
         updateBoxes();
     }

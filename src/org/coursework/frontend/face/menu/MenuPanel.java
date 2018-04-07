@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import org.coursework.Main;
 import org.coursework.backend.person.Permission;
+import org.coursework.backend.person.student.Student;
 import org.coursework.frontend.face.Role.CreateRolePanel;
 import org.coursework.frontend.face.Role.ViewRolesPanel;
 import org.coursework.frontend.face.frame.MFrame;
@@ -24,7 +25,11 @@ public class MenuPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent event) {
             MFrame frame = Main.getFrame();
-            frame.setContentPane(new CreateStudentPanel());
+            if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
+                frame.setContentPane(new CreateStudentPanel((Student)Main.getLoggedInAs().get()));  
+            }else{
+                frame.setContentPane(new CreateStudentPanel());
+            }
             frame.repaint();
             frame.revalidate();
         }
@@ -111,6 +116,9 @@ public class MenuPanel extends JPanel {
             button = new JButton("New Student");
         }
         button.addActionListener(new OnStudentButton());
+        if(Main.getRoles().isEmpty()){
+            button.setEnabled(false);
+        }
         return button;
     }
 
@@ -137,6 +145,9 @@ public class MenuPanel extends JPanel {
                 button.setEnabled(false);
             }
         }
+        if(Main.getPeople(Student.class).isEmpty()){
+            button.setEnabled(false);
+        }
         return button;
     }
 
@@ -146,12 +157,18 @@ public class MenuPanel extends JPanel {
         if (Main.getLoggedInAs().get().getPermission().equals(Permission.STUDENT)) {
             button.setVisible(false);
         }
+        if(Main.getPeople(Student.class).isEmpty()){
+            button.setEnabled(false);
+        }
         return button;
     }
 
     private JButton viewRoles() {
         JButton button = new JButton("View Roles");
         button.addActionListener(new OnViewRolesButton());
+        if(Main.getRoles().isEmpty()){
+            button.setEnabled(false);
+        }
         return button;
     }
 

@@ -3,8 +3,6 @@ package org.coursework.database.table;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Set;
-import org.coursework.backend.group.Group;
-import org.coursework.backend.person.staff.Staff;
 import org.coursework.database.core.CoreDatabaseLink;
 
 public interface TableBuilder<T extends TableLink> {
@@ -17,7 +15,9 @@ public interface TableBuilder<T extends TableLink> {
 
     public String getTableColumnSQL(String columnName);
 
-    public void saveInTable(T data) throws SQLException;
+    public void setInTable(T data) throws SQLException;
+    
+    public void updateInTable(T data) throws SQLException;
 
     public Set<T> getData(CoreDatabaseLink link) throws SQLException;
 
@@ -26,7 +26,6 @@ public interface TableBuilder<T extends TableLink> {
     @SuppressWarnings("unchecked")
     public void registerWithMain(T... value);
 
-    @SuppressWarnings("unchecked")
     public default void registerWithMain(Collection<T> values) {
         T[] array = toArray(values.size());
         values.toArray(array);
@@ -37,9 +36,14 @@ public interface TableBuilder<T extends TableLink> {
         registerWithMain(getData(link));
     }
 
-    public default void saveAllInTable() throws SQLException {
+    public default void saveAllInTable(CoreDatabaseLink link) throws SQLException {
+        Set<T> set = getData(link);
         for (T data : getDataFromMain()) {
-            saveInTable(data);
+            if(set.stream().anyMatch(t -> t.getId() == data.getId())){
+                updateInTable(data);
+            }else{
+                setInTable(data);
+            }
         }
     }
 }

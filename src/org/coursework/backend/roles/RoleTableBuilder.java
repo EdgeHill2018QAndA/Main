@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.coursework.Main;
-import org.coursework.backend.person.Person;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
 
@@ -26,9 +25,18 @@ public class RoleTableBuilder implements TableBuilder<Role> {
     }
 
     @Override
-    public void saveInTable(Role role) throws SQLException {
+    public void setInTable(Role role) throws SQLException {
         CoreDatabaseLink link = Main.getDatabaseLink().get();
         link.insertInto(this, role.getId(), role.getDisplayName());
+    }
+    
+    @Override
+    public void updateInTable(Role role) throws SQLException {
+        String[] columns = getTableColumns();
+        CoreDatabaseLink link = Main.getDatabaseLink().get();
+        String name = columns[1] + " = '" + role.getDisplayName() + "'";
+        String statement = "UPDATE " + TABLE_NAME + " SET " + name + " WHERE " + columns[0] + " = " + role.getId();
+        link.executeUpdate(statement);
     }
 
     @Override

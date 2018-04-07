@@ -29,9 +29,20 @@ public class PersonTableBuilder implements TableBuilder<Person> {
     }
 
     @Override
-    public void saveInTable(Person person) throws SQLException {
+    public void setInTable(Person person) throws SQLException {
         CoreDatabaseLink link = Main.getDatabaseLink().get();
         link.insertInto(this, person.getId(), person.getFirstName(), person.getLastName(), person.getPermission().name());
+    }
+    
+    @Override
+    public void updateInTable(Person person) throws SQLException {
+        String[] columns = getTableColumns();
+        CoreDatabaseLink link = Main.getDatabaseLink().get();
+        String first = columns[1] + " = '" + person.getFirstName() + "'";
+        String last = columns[2] + " = '" + person.getLastName() + "'";
+        String permission = columns[3] + " = '" + person.getPermission().name() + "'";
+        String statement = "UPDATE " + TABLE_NAME + " SET " + first + ", " + last + ", " + permission + " WHERE " + columns[0] + " = " + person.getId();
+        link.executeUpdate(statement);
     }
 
     @Override

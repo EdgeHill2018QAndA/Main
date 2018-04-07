@@ -110,8 +110,8 @@ public class Main {
         return true;
     }
 
-    public static Set<TableBuilder<? extends TableLink>> getTableBuilders() {
-        return new HashSet<>(TABLE_BUILDERS);
+    public static List<TableBuilder<? extends TableLink>> getTableBuilders() {
+        return TABLE_BUILDERS;
     }
 
     public static Set<Person> getPeople() {

@@ -76,7 +76,7 @@ public class CoreDatabaseLink {
             return 0;
         }
     }
-
+    
     public void insertInto(TableBuilder<? extends TableLink> link, Object... object) throws SQLException {
         PreparedStatement statement;
         String marks = null;
@@ -147,7 +147,7 @@ public class CoreDatabaseLink {
     public void saveData() {
         Main.getTableBuilders().stream().forEach(b -> {
             try {
-                b.saveAllInTable();
+                b.saveAllInTable(CoreDatabaseLink.this);
             } catch (SQLException ex) {
                 System.err.println("Failed to save to database in table: " + b.getTableName());
                 ex.printStackTrace();

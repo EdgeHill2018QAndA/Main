@@ -21,6 +21,7 @@ public abstract class AbstractPerson implements Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+        System.out.println("FirstName: " + this.firstName + " | LastName: " + this.lastName + " | ID: " + this.id);
     }
 
     @Override

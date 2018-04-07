@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.coursework.Main;
-import org.coursework.backend.person.Person;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
 
@@ -26,9 +25,14 @@ public class GroupTableBuilder implements TableBuilder<Group> {
     }
 
     @Override
-    public void saveInTable(Group data) throws SQLException {
+    public void setInTable(Group data) throws SQLException {
         CoreDatabaseLink link = Main.getDatabaseLink().get();
         link.insertInto(this, data.getId());
+    }
+    
+    @Override
+    public void updateInTable(Group group) throws SQLException {
+        //nothing to update
     }
 
     @Override

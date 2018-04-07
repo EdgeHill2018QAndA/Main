@@ -10,6 +10,7 @@ import java.util.Set;
 import org.coursework.Main;
 import org.coursework.backend.group.Group;
 import org.coursework.backend.person.Person;
+import static org.coursework.backend.person.PersonTableBuilder.TABLE_NAME;
 import org.coursework.backend.roles.Role;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
@@ -36,9 +37,9 @@ public class StudentOptionTableBuilder implements TableBuilder<StudentOption> {
     }
 
     @Override
-    public void saveInTable(StudentOption option) throws SQLException {
+    public void setInTable(StudentOption option) throws SQLException {
         CoreDatabaseLink link = Main.getDatabaseLink().get();
-        Object[] columns = new Object[11];
+        Object[] columns = new Object[12];
         columns[0] = option.getId();
         columns[1] = option.getStudent().getId();
         Optional<Group> opGroup = Main.getGroups().stream().filter(g -> g.getOptions().stream().anyMatch(o -> o.getId() == option.getId())).findAny();
@@ -62,6 +63,30 @@ public class StudentOptionTableBuilder implements TableBuilder<StudentOption> {
             }
         }
         link.insertInto(this, columns);
+    }
+    
+    @Override
+    public void updateInTable(StudentOption option) throws SQLException {
+        String[] columns = getTableColumns();
+        CoreDatabaseLink link = Main.getDatabaseLink().get();
+        Optional<Group> opGroup = Main.getGroups().stream().filter(g -> g.getOptions().contains(option)).findAny();
+        int groupId = -1;
+        if(opGroup.isPresent()){
+           groupId = opGroup.get().getId();
+        }
+        String student = columns[1] + " = " + option.getStudent().getId();
+        String group1 = columns[2] + " = " + groupId;
+        String statement = "UPDATE " + TABLE_NAME + " SET " + student + ", " + group1;
+        for(int A = 0; A < 9; A++){
+            if(option.getRoles().size() <= A){
+                statement = statement + ", " + columns[A + 3] + " = -1";
+            }else{
+                Role role = option.getRoles().get(A);
+                statement = statement + ", " + columns[A + 3] + " = " + role.getId();
+            }
+        }
+        statement = statement + " WHERE " + columns[0] + " = " + option.getId();
+        link.executeUpdate(statement);
     }
 
     @Override
