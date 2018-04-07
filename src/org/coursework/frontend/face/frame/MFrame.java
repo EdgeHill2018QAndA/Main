@@ -25,5 +25,19 @@ public class MFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
+    
+    public int setProgress(int percent){
+        //java 9 only
+        return percent;
+    }
+    
+    public int setProgress(int value, int max){
+        int percent = (int)((value * 100.0f)/max);
+        return setProgress(percent);
+    }
+    
+    public int setProgress(int min, int value, int max){
+        return setProgress((value-min), (max-min));
+    }
 
 }

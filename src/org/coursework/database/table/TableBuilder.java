@@ -3,6 +3,8 @@ package org.coursework.database.table;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Set;
+import org.coursework.backend.group.Group;
+import org.coursework.backend.person.staff.Staff;
 import org.coursework.database.core.CoreDatabaseLink;
 
 public interface TableBuilder<T extends TableLink> {
@@ -26,6 +28,7 @@ public interface TableBuilder<T extends TableLink> {
 	public default void registerWithMain(Collection<T> values) {
         values.stream().forEach(r -> {
             System.out.println("Register with main: " + r.getClass().getSimpleName());
+            System.out.println("T = " + getClass().getGenericInterfaces()[0].getTypeName());
             registerWithMain(r);
         });
     }
