@@ -9,8 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.coursework.Main;
 import org.coursework.backend.group.Group;
-import org.coursework.backend.person.Person;
-import static org.coursework.backend.person.PersonTableBuilder.TABLE_NAME;
 import org.coursework.backend.roles.Role;
 import org.coursework.database.core.CoreDatabaseLink;
 import org.coursework.database.table.TableBuilder;
