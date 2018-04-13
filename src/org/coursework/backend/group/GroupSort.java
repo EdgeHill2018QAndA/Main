@@ -82,7 +82,6 @@ public class GroupSort {
             System.out.println("On While");
             try {
                 Group group = createGroup(groupsMustHave);
-                System.out.println("Adding: " + group.getStudents());
                 groups.add(group);
             } catch (SQLException e) {
                 System.err.println("Failed to create group");
@@ -102,13 +101,21 @@ public class GroupSort {
                 options = (getAppropeateRoles(list));
             } else {
                 options = getPreferredNeededStudents(list, groupMustHave);
+                if(options.isEmpty()) {
+                	options = getNoneNeededRoleStudents(options, groupMustHave);
+                }
             }
             if (options.isEmpty()) {
-                break;
+            	break;
             }
+            System.out.println("Possible options: " + options.size());
             StudentOption student = pickRandom(options);
+            System.out.println("picked: " + student.getStudent().getName());
             list.add(student);
             this.options.remove(student);
+        }
+        if(list.isEmpty()) {
+        	return null;
         }
         return new Group(list);
     }
@@ -121,14 +128,41 @@ public class GroupSort {
     }
 
     //gets all possible students that would best fit inside the group based on the roles required and the students already in the group
-    private List<StudentOption> getPreferredNeededStudents(Collection<StudentOption> options, Collection<Role> required) {
+    private List<StudentOption> getPreferredNeededStudents(Collection<StudentOption> options, Collection<Role> required){
         Set<Role> rolesLeft = required.stream().filter(o -> !options.stream().anyMatch(s -> s.getPreferredRole().get().equals(o))).collect(Collectors.toSet());
-        return this.options.stream().filter(o -> rolesLeft.stream().anyMatch(r -> r.equals(o.getPreferredRole().get()))).collect(Collectors.toList());
+        int firstRoleFound = Integer.MAX_VALUE;
+        List<StudentOption> ret = new ArrayList<>();
+        for(StudentOption option : this.options) {
+            int B = option.getRoles().size();
+            if(firstRoleFound < B) {
+            	B = firstRoleFound;
+            }
+        	for(int A = 0; A <= B; A++) {
+        		if(option.getRoles().size() == A) {
+        			break;
+        		}
+        		Role role = option.getRoles().get(A);
+        		if(rolesLeft.contains(role)) {
+        			if(A < B) {
+        				ret = new ArrayList<>();
+            			B = A;
+        			}
+        			ret.add(option);
+        		}
+        	}
+        }
+        return ret;
+    }
+    
+    //gets all the students that do not match any of the required roles
+    private List<StudentOption> getNoneNeededRoleStudents(Collection<StudentOption> options, Collection<Role> required) {
+    	Set<Role> rolesLeft = required.stream().filter(o -> !options.stream().anyMatch(s -> s.getPreferredRole().get().equals(o))).collect(Collectors.toSet());
+    	return this.options.stream().filter(o -> !rolesLeft.stream().anyMatch(r -> o.getRoles().contains(r))).collect(Collectors.toList());
     }
 
     //gets all possible students that have a preferred role that is not in the assigned collection
     private List<StudentOption> getAppropeateRoles(Collection<StudentOption> assigned) {
         return this.options.stream().filter(s -> !assigned.stream().anyMatch(o -> o.getPreferredRole().get().equals(s.getPreferredRole().get()))).collect(Collectors.toList());
     }
-
+    
 }

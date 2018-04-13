@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class TestGroupSorter {
 	
-	private static CoreDatabaseLink link = new CoreDatabaseLink("jdbc:mysql://localhost:3306/test", "root", "");
+	private static CoreDatabaseLink link = new CoreDatabaseLink("jdbc:mysql://localhost:3306/test", "root", "Patmoseley2");
 	
 	@Test
 	public void testGroupSortNoArgument() {
