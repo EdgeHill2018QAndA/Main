@@ -95,6 +95,7 @@ public class GroupSort {
     private Group createGroup(Collection<Role> groupMustHave) throws SQLException {
         List<StudentOption> list = new ArrayList<>();
         int groupSize = Main.getRecommendedGroupSize();
+        System.out.println("Group Size: " + groupSize);
         for (int A = 0; A < groupSize; A++) {
             List<StudentOption> options;
             if (groupMustHave.isEmpty()) {

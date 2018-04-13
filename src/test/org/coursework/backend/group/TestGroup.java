@@ -1,6 +1,7 @@
 package test.org.coursework.backend.group;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.coursework.backend.group.Group;
 import org.coursework.backend.person.student.Student;
@@ -75,6 +76,48 @@ public class TestGroup {
 		Group group = new Group(3);
 		group.register(soOne, soTwo);
 		assertEquals(2, group.getOptions().size());
+	}
+	
+	@Test
+	public void testRegisterBlank() {
+		Role roleOne = new Role(1, "RoleOne");
+		Role roleTwo = new Role(2, "RoleTwo");
+		Student studentOne = new Student(6, "Test", "One");
+		Student studentTwo = new Student(4, "Test", "Two");
+		StudentOption soOne = new StudentOption(6, studentOne, roleOne, roleTwo);
+		StudentOption soTwo = new StudentOption(4, studentTwo, roleTwo, roleOne);
+		Group group = new Group(3, soOne, soTwo);
+		group.register();
+		assertEquals(2, group.getOptions().size());
+	}
+	
+	@Test
+	public void testSwapOneStudents() {
+		Role roleOne = new Role(1, "RoleOne");
+		Student studentOne = new Student(6, "Test", "One");
+		Student studentTwo = new Student(4, "Test", "Two");
+		StudentOption soOne = new StudentOption(6, studentOne, roleOne);
+		StudentOption soTwo = new StudentOption(4, studentTwo, roleOne);
+		Group group = new Group(3, soOne);
+		if (!group.swap(soTwo)) {
+			fail();
+		}
+		assertEquals(true, group.getOptions().stream().allMatch(s -> s.equals(soTwo)));
+	}
+	
+	@Test
+	public void testSwapTwoStudents() {
+		Role roleOne = new Role(1, "RoleOne");
+		Role roleTwo = new Role(2, "RoleTwo");
+		Student studentOne = new Student(6, "Test", "One");
+		Student studentTwo = new Student(4, "Test", "Two");
+		StudentOption soOne = new StudentOption(6, studentOne, roleOne, roleTwo);
+		StudentOption soTwo = new StudentOption(4, studentTwo, roleTwo, roleOne);
+		Group group = new Group(3, soOne);
+		if (!group.swap(soTwo, soOne)) {
+			fail();
+		}
+		assertEquals(true, group.getOptions().stream().allMatch(s -> s.equals(soTwo)));
 	}
 
 }
