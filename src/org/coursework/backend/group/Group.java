@@ -39,6 +39,7 @@ public class Group implements TableLink {
 
     public Group(int id, Collection<StudentOption> options) {
         this.options.addAll(options);
+        this.id = id;
     }
 
     public Set<StudentOption> getOptions() {
