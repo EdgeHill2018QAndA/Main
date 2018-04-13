@@ -73,7 +73,7 @@ public class Main {
     }
 
     public static boolean setRecommendedGroupSize(int size) {
-        if (size > 1) {
+        if (size < 1) {
             return false;
         }
         recommendedGroupSize = size;
