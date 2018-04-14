@@ -55,9 +55,11 @@ public class GroupTableBuilder implements TableBuilder<Group> {
 
     @Override
     public void registerWithMain(Group... value) {
+    	List<Group> groups = new ArrayList<>(Main.getGroups());
         for (Group group : value) {
-            Main.getGroups().add(group);
+            groups.add(group);
         }
+        Main.setGroups(groups);
     }
 
     @Override
