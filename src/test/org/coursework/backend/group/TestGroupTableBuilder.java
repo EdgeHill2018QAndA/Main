@@ -39,6 +39,15 @@ public class TestGroupTableBuilder {
 	}
 	
 	@Test
+	public void testRegisterWithMainWithBlankArray() {
+		List<Group> clear = new ArrayList<>();
+		Main.setGroups(clear);
+		GroupTableBuilder builder = new GroupTableBuilder();
+		builder.registerWithMain();
+		assertEquals(0, Main.getGroups().size());
+	}
+	
+	@Test
 	public void testRegisterWithMainWithArray() {
 		List<Group> clear = new ArrayList<>();
 		Main.setGroups(clear);
@@ -61,6 +70,24 @@ public class TestGroupTableBuilder {
 		groups.add(groupTwo);
 		builder.registerWithMain(groups);
 		assertEquals(2, Main.getGroups().size());
+	}
+	
+	@Test
+	public void testGetDataFromMain() {
+		List<Group> clear = new ArrayList<>();
+		Main.setGroups(clear);
+		Group groupOne = new Group(5);
+		Group groupTwo = new Group(6);
+		GroupTableBuilder builder = new GroupTableBuilder();
+		builder.registerWithMain(groupOne, groupTwo);
+		assertEquals(2, builder.getDataFromMain().size());
+	}
+	
+	@Test
+	public void testToArrayWholeNumber() {
+		GroupTableBuilder builder = new GroupTableBuilder();
+		Group[] groups = new Group[5];
+		assertArrayEquals(groups, builder.toArray(5));
 	}
 
 }
