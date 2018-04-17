@@ -25,4 +25,22 @@ public class TestMain {
 		assertEquals(true, opPerson.isPresent());
 	}
 	
+	@Test
+	public void testSetRecommendedGroupSizeSix() {
+		Main.setRecommendedGroupSize(6);
+		assertEquals(6, Main.getRecommendedGroupSize());
+	}
+	
+	@Test
+	public void testSetRecommendedGroupSizeZero() {
+		Main.setRecommendedGroupSize(0);
+		assertEquals(true, Main.getRecommendedGroupSize() != 0);
+	}
+	
+	@Test
+	public void testSetRecommendedGroupSizeOne() {
+		Main.setRecommendedGroupSize(1);
+		assertEquals(true, Main.getRecommendedGroupSize() != 0);
+	}
+	
 }
